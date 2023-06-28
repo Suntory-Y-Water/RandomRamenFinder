@@ -1,23 +1,31 @@
+import React from 'react';
 import { useEffect, useState } from 'react';
 import './App.css';
 import db from './firebase';
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 
+interface Post {
+  store_name: string;
+  store_address: string;
+  open_time: string;
+  close_day: string;
+}
+
 function App() {
   
-  const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect( () => {
     const postData = collection(db, "jirouFromTokyoAndKanagawa");
     getDocs(postData).then((snapShot) => {
-      const postsData = snapShot.docs.map((doc) => ({ ...doc.data()}));
+      const postsData = snapShot.docs.map((doc) => ({ ...doc.data() } as Post));
       setPosts(postsData);
     });
 
     onSnapshot(postData, (post) => {
-      const postsData = post.docs.map((doc) => ({...doc.data()}));
+      const postsData = post.docs.map((doc) => ({...doc.data()} as Post));
       setPosts(postsData);
     });
   }, [])
