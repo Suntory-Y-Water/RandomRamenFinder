@@ -1,23 +1,17 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
 import './App.css';
 import db from './firebase';
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { Post, PostDetails } from './components/PostDetails';
+import LoadingSpinner from './components/LoadingSpinner';
 
-interface Post {
-  store_name: string;
-  store_address: string;
-  open_time: string;
-  close_day: string;
-}
 
-function App() {
-  
+function usePosts() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect( () => {
+  useEffect(() => {
     const postData = collection(db, "jirouFromTokyoAndKanagawa");
     getDocs(postData).then((snapShot) => {
       const postsData = snapShot.docs.map((doc) => ({ ...doc.data() } as Post));
@@ -28,7 +22,7 @@ function App() {
       const postsData = post.docs.map((doc) => ({...doc.data()} as Post));
       setPosts(postsData);
     });
-  }, [])
+  }, []);
 
   const handleButtonClick = () => {
     if (isLoading) {
@@ -45,6 +39,19 @@ function App() {
     }, 1000);
   }
 
+  return {
+    posts,
+    selectedPost,
+    isLoading,
+    handleButtonClick
+  };
+}
+
+
+
+function App() {
+  const { isLoading, selectedPost, handleButtonClick } = usePosts();
+
   return (
     <div className="App">
       <div className="App-header">
@@ -52,36 +59,7 @@ function App() {
       </div>
       <div className='mainContaienr'>
         <table className='tableLayout'>
-          {isLoading ?
-            <div className='circle-body'>
-              <div className='spinner-box'>
-                <div className="circle-border">
-                  <div className="circle-core"></div>
-                </div>
-              </div>
-            </div>:
-              selectedPost && (
-                <div key={selectedPost.store_name}>
-                  <h1 className='title'>{selectedPost.store_name}</h1>
-                  <tr>
-                    <th>店名</th>
-                    <th>{selectedPost.store_name}</th>
-                  </tr>
-                  <tr>
-                    <th>住所</th>
-                    <th>{selectedPost.store_address}</th>
-                  </tr>
-                  <tr>
-                    <th>営業時間</th>
-                    <th>{selectedPost.open_time}</th>
-                  </tr>
-                  <tr>
-                    <th>定休日</th>
-                    <th>{selectedPost.close_day}</th>
-                  </tr>
-                </div>
-              )
-            }
+          {isLoading ? <LoadingSpinner /> : selectedPost && <PostDetails post={selectedPost} />}
         </table>
         <div className='button-container'>
           <div>
