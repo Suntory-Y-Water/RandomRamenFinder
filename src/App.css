@@ -1,38 +1,113 @@
-.App {
-  text-align: center;
+:root {
+  --main-background-color: #1e2739;
+  --main-color: white;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App, .App-header {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
+  background-color: var(--main-background-color);
   font-size: calc(10px + 2vmin);
+  color: var(--main-color);
+}
+
+.App {
+  min-height: 100vh;
+}
+
+.App-header {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+}
+
+.tableLayout, .title {
+  text-align: left;
+  margin: auto;
+}
+
+.mainContaienr {
+  width: 75%;
+  height: 75%;
+}
+
+.randomButton {
+  background-color: #00af4f;
+  border: none;
+  color: var(--main-color);
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 24px;
+  border-radius: 100vh;
+  margin: 50px auto 0;
+  position: relative;
+  transition: background-color 0.4s, transform 0.4s;
+  cursor: pointer;
+}
+
+.randomButton:hover {
+  background-color: #007f3b;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.randomButton:active {
+	transform: translate(0,10px);
+	border-bottom:none;
 }
 
-@keyframes App-logo-spin {
+.spinner-box {
+  width: 300px;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+}
+
+.circle-border, .circle-core {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.circle-border {
+  width: 150px;
+  height: 150px;
+  padding: 3px;
+  background: linear-gradient(0deg, rgba(63,249,220,0.1) 33%, rgba(63,249,220,1) 100%);
+  animation: spin .8s linear 0s infinite;
+}
+
+.circle-core {
+  width: 100%;
+  height: 100%;
+  background-color: var(--main-background-color);
+}
+
+@keyframes spin {
   from {
-    transform: rotate(0deg);
+      transform: rotate(0);
   }
-  to {
-    transform: rotate(360deg);
+  to{
+      transform: rotate(359deg);
   }
 }
+
+.circle-body {
+  background-color: var(--main-background-color);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+

@@ -9,7 +9,6 @@ function App() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  // データベースから情報を取得する
   useEffect( () => {
     const postData = collection(db, "jirouFromTokyoAndKanagawa");
     getDocs(postData).then((snapShot) => {
@@ -24,6 +23,10 @@ function App() {
   }, [])
 
   const handleButtonClick = () => {
+    if (isLoading) {
+      return;
+    }
+
     setIsLoading(true);
     setTimeout(() => {
       if (posts.length > 0) {
@@ -31,31 +34,53 @@ function App() {
         setSelectedPost(posts[randomIndex]);
       }
       setIsLoading(false);
-    }, 2000);
+    }, 1000);
   }
-
 
   return (
     <div className="App">
-      <div>
+      <div className="App-header">
         <h1>じろるーれっと</h1>
-        <div>
-          {isLoading ? <p>読み込み中...</p> :
-            selectedPost && (
-              <div key={selectedPost.store_name}>
-                <h1>{selectedPost.store_name}</h1>
-                <p>{selectedPost.store_address}</p>
-                <p>{selectedPost.open_time}</p>
-                <p>{selectedPost.close_day}</p>
+      </div>
+      <div className='mainContaienr'>
+        <table className='tableLayout'>
+          {isLoading ?
+            <div className='circle-body'>
+              <div className='spinner-box'>
+                <div className="circle-border">
+                  <div className="circle-core"></div>
+                </div>
               </div>
-            )
-          }
-        </div>
-        <div>
-          <button onClick={handleButtonClick} className='randomButton'>ランダムに投稿を表示</button>
+            </div>:
+              selectedPost && (
+                <div key={selectedPost.store_name}>
+                  <h1 className='title'>{selectedPost.store_name}</h1>
+                  <tr>
+                    <th>店名</th>
+                    <th>{selectedPost.store_name}</th>
+                  </tr>
+                  <tr>
+                    <th>住所</th>
+                    <th>{selectedPost.store_address}</th>
+                  </tr>
+                  <tr>
+                    <th>営業時間</th>
+                    <th>{selectedPost.open_time}</th>
+                  </tr>
+                  <tr>
+                    <th>定休日</th>
+                    <th>{selectedPost.close_day}</th>
+                  </tr>
+                </div>
+              )
+            }
+        </table>
+        <div className='button-container'>
+          <div>
+            <button onClick={handleButtonClick} className='randomButton'>ラーメン屋を選ぶ</button>
+          </div>
         </div>
       </div>
-
     </div>
   );
 }
