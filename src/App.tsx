@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import db from './firebase';
+import db from './Database/firebase';
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { Post, PostDetails } from './components/PostDetails';
 import LoadingSpinner from './components/LoadingSpinner';

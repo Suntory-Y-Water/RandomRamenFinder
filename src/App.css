@@ -111,3 +111,26 @@
   align-items: flex-start;
 }
 
+/* 以下、レスポンシブデザインの追加部分 */
+
+/* スマートフォンとタブレット向け：画面幅が768px以下 */
+@media (max-width: 768px) {
+  .mainContaienr {
+    width: 90%;
+    height: auto;
+  }
+  
+  .App-header {
+    padding: 10px 20px;
+  }
+  
+  .spinner-box {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .circle-border {
+    width: 75px;
+    height: 75px;
+  }
+}
